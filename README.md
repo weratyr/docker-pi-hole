@@ -11,13 +11,14 @@
 [Docker-compose](https://docs.docker.com/compose/install/) example:
 
 ```yaml
-version: "3"
+version: "2"
 
 # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
   pihole:
-    container_name: pihole
+    container_name: dnsmasq_pihole
     image: pihole/pihole:latest
+    network_mode: "host"
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -26,11 +27,12 @@ services:
       - "443:443/tcp"
     environment:
       TZ: 'America/Chicago'
-      # WEBPASSWORD: 'set a secure password here or it will be random'
+      WEBPASSWORD: 'secret'
     # Volumes store your data between container upgrades
     volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - 'dnsmasq_pihole_conf:/etc/pihole/'
+      - 'dnsmasq_conf:/etc/dnsmasq.d/'
+      - 'dnsmasq_log:/var/log/'
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:
