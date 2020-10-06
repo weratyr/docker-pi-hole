@@ -28,6 +28,7 @@ services:
     environment:
       TZ: 'America/Chicago'
       WEBPASSWORD: 'secret'
+      WEB_PORT: '8080'
     # Volumes store your data between container upgrades
     volumes:
       - 'dnsmasq_pihole_conf:/etc/pihole/'
@@ -58,8 +59,9 @@ var/log/pihole.log {
         sharedscripts
 
 }
-
 ```
+Note: Change listen behavior from `listen only on interface eth0` to `listen on all interfaces` if you have a default vlan configured.
+
 
 2. Run `docker-compose up --detach` to build and start pi-hole
 
