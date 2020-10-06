@@ -39,6 +39,28 @@ services:
       - NET_ADMIN
     restart: unless-stopped
 ```
+
+Adjust logrotate file in /etc/pihole/logroate to keep all dns query logs
+```
+var/log/pihole.log {
+	su root root
+	copytruncate
+	nomail
+	dateext dateformat -%Y-%m-%d--%H-%M
+        daily  
+        missingok
+        notifempty
+        maxsize 50M
+        rotate 400
+	compress
+        delaycompress
+        create 0640 dnsmasq root
+        sharedscripts
+
+}
+
+```
+
 2. Run `docker-compose up --detach` to build and start pi-hole
 
 [Here is an equivalent docker run script](https://github.com/pi-hole/docker-pi-hole/blob/master/docker_run.sh).
